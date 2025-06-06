@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +22,17 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 class HelloSpringDataJpaApplicationTests {
+    /// ////////
+    @Autowired
+    private PasswordEncoder encoder;
 
+    @Test
+    void generateHashedPassword() {
+        String pwd = encoder.encode("alicepw");
+        System.out.println("'" + pwd + "'");
+    }
+
+    /// ////////
     @Autowired
     private ProductRepository productRepository;
 
@@ -58,7 +69,7 @@ class HelloSpringDataJpaApplicationTests {
 
     }
 
-   @Test
+    @Test
     @DisplayName("Test3: createProduct")
     public void createProduct() {
 
@@ -98,7 +109,7 @@ class HelloSpringDataJpaApplicationTests {
 
     @Test
     @DisplayName("Test6: findByNameContainingWithPagingAndSort")
-    public void findByNameContainingWithPagingAndSort( ) {
+    public void findByNameContainingWithPagingAndSort() {
 
         Pageable paging = PageRequest.of(0, 3, Sort.Direction.DESC, "id");
 
@@ -115,7 +126,7 @@ class HelloSpringDataJpaApplicationTests {
     @Test
     @DisplayName("Test7: searchByNameUsingQuery")
     public void searchByNameUsingQuery() {
-        List<Product> productList= productRepository.searchByName("Air");
+        List<Product> productList = productRepository.searchByName("Air");
 
         logger.info("====searchByNameUsingQuery: Air====");
         productList.forEach(product -> logger.info("--> {}", product));

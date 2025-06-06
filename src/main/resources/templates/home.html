@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>SpringBoot Security</title>
+</head>
+
+<body>
+<script th:if="${loginSuccessMsg}" th:inline="javascript">
+    alert([[${loginSuccessMsg}]]);
+</script>
+<h2> 안녕하세요. 제품 정보 사이트에 오신 것을 환영합니다 </h2>
+
+<div sec:authorize="isAuthenticated()">
+    <p>환영합니다. <span sec:authentication="principal.username">User</span>님.</p>
+    <!-- <p><a th:href="@{/logout}">Logout</a></p>-->
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="로그아웃"/>
+    </form>
+
+    <div sec:authorize="isAuthenticated()">
+        <!--        <div th:each="authority : ${#authentication.authorities}">-->
+        <!--            <span th:text="${authority.getAuthority()}">[Authority]</span>-->
+        <!--        </div>-->
+        <br>
+        <a class="btn btn-primary" th:href="@{/products}">제품 목록 보기</a>
+    </div>
+    <div sec:authorize="hasRole('ROLE_ADMIN')"
+         style="border: 2px solid #0d6efd; padding: 16px; margin-top: 24px;">
+        <h3>운영자만 볼 수 있는 영역입니다.</h3>
+        <p><a th:href="@{/admin}">사용자 관리 페이지</a></p>
+    </div>
+</div>
+
+<div sec:authorize="isAnonymous()">
+    <p><a th:href="@{/login}">로그인</a></p>
+</div>
+
+</body>
+</html>
