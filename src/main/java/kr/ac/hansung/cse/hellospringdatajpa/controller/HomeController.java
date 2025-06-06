@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
     @GetMapping("/")
     public String redirectToProducts() {
-        return "redirect:/products";
+        return "redirect:/home";
     }
 
     @GetMapping("/home")
